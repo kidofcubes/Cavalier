@@ -245,6 +245,18 @@ Adw.PreferencesWindow _root {
         }
       }
 
+      Adw.ActionRow {
+        title: _("Squared");
+        subtitle: _("Whether particles should use the same (minimum of defaults) width and height.");
+        activatable-widget: _squaringSwitch;
+        sensitive: bind _particlesCheckButton.active;
+
+        [suffix]
+        Gtk.Switch _squaringSwitch {
+          valign: center;
+        }
+      }
+
       Adw.ActionRow _thicknessRow {
         title: _("Thickness of lines");
         subtitle: _("Thickness of lines when filling is off (in pixels).");

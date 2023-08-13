@@ -43,6 +43,7 @@ public partial class PreferencesDialog : Adw.PreferencesWindow
     [Gtk.Connect] private readonly Gtk.Scale _offsetScale;
     [Gtk.Connect] private readonly Adw.ActionRow _roundnessRow;
     [Gtk.Connect] private readonly Gtk.Scale _roundnessScale;
+    [Gtk.Connect] private readonly Gtk.Switch _squaringSwitch;
     [Gtk.Connect] private readonly Gtk.Switch _fillingSwitch;
     [Gtk.Connect] private readonly Adw.ActionRow _thicknessRow;
     [Gtk.Connect] private readonly Gtk.Scale _thicknessScale;
@@ -361,6 +362,11 @@ public partial class PreferencesDialog : Adw.PreferencesWindow
         actFill.OnActivate += (sender, e) => _fillingSwitch.SetActive(!_fillingSwitch.GetActive());
         application.AddAction(actFill);
         application.SetAccelsForAction("app.toggle-filling", new string[] { "f" });
+        //Toggle Squaring Action
+        var actSquare = Gio.SimpleAction.New("toggle-squaring", null);
+        actSquare.OnActivate += (sender, e) => _squaringSwitch.SetActive(!_squaringSwitch.GetActive());
+        application.AddAction(actSquare);
+        application.SetAccelsForAction("app.toggle-squaring", new string[] { "<Shift>S" });
         //Increase Lines Thickness Action
         var actIncThick = Gio.SimpleAction.New("inc-thickness", null);
         actIncThick.OnActivate += (sender, e) =>
@@ -610,6 +616,13 @@ public partial class PreferencesDialog : Adw.PreferencesWindow
             if (e.Pspec.GetName() == "active")
             {
                 _controller.Filling = _fillingSwitch.GetActive();
+            }
+        };
+        _squaringSwitch.OnNotify += (sender, e) =>
+        {
+            if (e.Pspec.GetName() == "active")
+            {
+                _controller.Squaring = _squaringSwitch.GetActive();
             }
         };
         _thicknessScale.OnValueChanged += (sender, e) =>
@@ -864,6 +877,7 @@ public partial class PreferencesDialog : Adw.PreferencesWindow
         _roundnessScale.SetValue(_controller.ItemsRoundness * 100.0);
         _thicknessRow.SetSensitive(!_fillingSwitch.GetActive());
         _fillingSwitch.SetActive(_controller.Filling);
+        _squaringSwitch.SetActive(_controller.Squaring);
         _thicknessScale.SetValue((double)_controller.LinesThickness);
         _borderlessSwitch.SetActive(_controller.Borderless);
         _sharpCornersSwitch.SetActive(_controller.SharpCorners);

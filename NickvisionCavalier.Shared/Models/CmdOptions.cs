@@ -52,6 +52,11 @@ public class CmdOptions {
     [Option('r', "items-roundness", Required = false, HelpText = "Roundness of items (0-100)")]
     public uint? ItemsRoundness { get; set; }
     /// <summary>
+    /// Whether to square or scale particles independently
+    /// </summary>
+    [Option('q', "squaring", Required = false, HelpText = "Square (true) or scale sides independently (false)")]
+    public bool? Squaring { get; set; }
+    /// <summary>
     /// Whether to fill or draw lines
     /// </summary>
     [Option('f', "filling", Required = false, HelpText = "Fill (true) or draw lines (false)")]

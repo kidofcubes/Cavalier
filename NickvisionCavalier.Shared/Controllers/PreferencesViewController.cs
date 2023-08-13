@@ -262,6 +262,16 @@ public class PreferencesViewController
     }
 
     /// <summary>
+    /// Whether to square or scale independently
+    /// </summary>
+    public bool Squaring
+    {
+        get => Configuration.Current.Squaring;
+
+        set => Configuration.Current.Squaring = value;
+    }
+
+    /// <summary>
     /// Whether to fill or draw lines
     /// </summary>
     public bool Filling
@@ -445,6 +455,11 @@ public class PreferencesViewController
             if (o.ItemsRoundness.HasValue)
             {
                 ItemsRoundness = Math.Min(o.ItemsRoundness.Value, 100) / 100.0f;
+                updateCavalier = true;
+            }
+            if (o.Squaring.HasValue)
+            {
+                Squaring = o.Squaring.Value;
                 updateCavalier = true;
             }
             if (o.Filling.HasValue)

@@ -94,6 +94,10 @@ public class Configuration : ConfigurationBase
     /// </summary>
     public float ItemsRoundness { get; set; }
     /// <summary>
+    /// Whether to square or scale particles independently
+    /// </summary>
+    public bool Squaring { get; set; }
+    /// <summary>
     /// Whether to fill or draw lines
     /// </summary>
     public bool Filling { get; set; }
@@ -167,6 +171,7 @@ public class Configuration : ConfigurationBase
         Direction = DrawingDirection.BottomTop;
         ItemsOffset = 0.1f;
         ItemsRoundness = 0.5f;
+        Squaring = false;
         Filling = true;
         LinesThickness = 5;
         Mode = DrawingMode.WaveBox;

@@ -456,6 +456,17 @@ public class Renderer
         var step = (direction < DrawingDirection.LeftRight ? width : height) / sample.Length;
         var itemWidth = (direction < DrawingDirection.LeftRight ? step : width / 11) * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness / 2);
         var itemHeight = (direction < DrawingDirection.LeftRight ? height / 11 : step) * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness / 2);
+        if (Configuration.Current.Squaring)
+        {
+            if (itemWidth < itemHeight)
+            {
+                itemHeight=itemWidth;
+            }
+            else
+            {
+                itemWidth=itemHeight;
+            }
+        }
         for (var i = 0; i < sample.Length; i++)
         {
             switch (direction)
@@ -878,13 +889,26 @@ public class Renderer
             Canvas.Save();
             Canvas.Translate(x + width / 2, y + height / 2);
             Canvas.RotateRadians(2 * (float)Math.PI * (i + 0.5f) / sample.Length + rotation);
+            var itemWidth = barWidth * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness);
+            var itemHeight = (fullRadius - innerRadius) / 10 * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness);
+            if (Configuration.Current.Squaring)
+            {
+                if (itemWidth < itemHeight)
+                {
+                    itemHeight=itemWidth;
+                }
+                else
+                {
+                    itemWidth=itemHeight;
+                }
+            }
             Canvas.DrawRoundRect(
                 -barWidth * (1 - Configuration.Current.ItemsOffset * 2) / 2 + (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness / 2),
                 innerRadius + (fullRadius - innerRadius) / 10 * 9 * sample[i] + (fullRadius - innerRadius) / 10 * Configuration.Current.ItemsOffset + (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness / 2),
-                barWidth * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness),
-                (fullRadius - innerRadius) / 10 * (1 - Configuration.Current.ItemsOffset * 2) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness),
-                (barWidth * (1 - Configuration.Current.ItemsOffset) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness)) * Configuration.Current.ItemsRoundness,
-                (fullRadius - innerRadius) / 10 * (1 - Configuration.Current.ItemsOffset) - (Configuration.Current.Filling ? 0 : Configuration.Current.LinesThickness) * Configuration.Current.ItemsRoundness,
+                itemWidth,
+                itemHeight,
+                itemWidth * Configuration.Current.ItemsRoundness,
+                itemHeight * Configuration.Current.ItemsRoundness,
                 paint);
             Canvas.Restore();
         }
